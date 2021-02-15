@@ -11,11 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import androidx.gridlayout.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,8 +29,52 @@ public class MainActivity extends AppCompatActivity {
 
     GridLayout gridLayout;
     ImageView imageView;
+    int name_index;
+    ArrayList<String> arrayList;
 
     HashMap<String,String> hashMap;
+
+    public void GO(View view)
+    {
+        Button button=(Button) view;
+        if(button.getText().toString().equalsIgnoreCase(arrayList.get(name_index)))
+        {
+            Toast.makeText(this,"CORRECT",Toast.LENGTH_SHORT).show();
+            Log.i("MESSAGE","CORRECT");
+
+        }
+        else
+        {
+            Toast.makeText(this,"WRONG",Toast.LENGTH_SHORT).show();
+            Log.i("MESSAGE","WRONG");
+        }
+
+        name_index=new Random().nextInt(arrayList.size());
+        int button_index=new Random().nextInt(gridLayout.getChildCount());
+        Button real_button=(Button) gridLayout.getChildAt(button_index);
+
+        download(hashMap.get(arrayList.get(name_index)));
+        real_button.setText(arrayList.get(name_index));
+
+        for(int i=0;i<gridLayout.getChildCount();i++)
+        {
+            if(i!=button_index)
+            {
+                 button= (Button) gridLayout.getChildAt(i);
+                int index=new Random().nextInt(arrayList.size());
+                while (index==name_index)
+                {
+                    index=new Random().nextInt(arrayList.size());
+                }
+                button.setText(arrayList.get(index));
+
+
+            }
+
+        }
+
+
+    }
 
 
 
@@ -130,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         imageView=findViewById(R.id.imageView);
         hashMap=new HashMap<>();
 
-        ArrayList<String> arrayList=new ArrayList<>();
+         arrayList=new ArrayList<>();
 
         DownloadTask task=new DownloadTask();
         String result=null;
@@ -193,9 +237,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-     //   for(int i=0;i<arrayList.size();i++)
-      //  {
-            int name_index=new Random().nextInt(arrayList.size());
+
+             name_index=new Random().nextInt(arrayList.size());
             int button_index=new Random().nextInt(gridLayout.getChildCount());
             Button real_button=(Button) gridLayout.getChildAt(button_index);
 
@@ -219,13 +262,17 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+            for(int i=0;i<4;i++)
+            {
+                Button button=(Button) gridLayout.getChildAt(i);
+                Log.i(i+"",button.getText().toString());
+            }
 
 
 
 
 
 
-     //   }
 
 
 
